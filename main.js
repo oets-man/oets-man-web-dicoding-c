@@ -44,15 +44,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const formObject = Object.fromEntries(formData.entries());
         formObject.isComplete = formObject.isComplete ? true : false;
 
-        // validasi
-        if (formObject.year.length != 4) {
+        // validasi tahun
+        const regex = /^\d{4}$/;
+        const year = regex.test(formObject.year.toString())
+            ? Number(formObject.year)
+            : false;
+        if (!year) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Harus empat digit!',
+                text: 'Field tahun 1) harus diisi, 2) hanya menerima angka bulat, dan 3) harus empat digit!',
             });
             return;
         }
+        formObject.year = year;
+
         if (!formObject.id) {
             // new
             formObject.id = `${Date.now()}_${Math.random()
